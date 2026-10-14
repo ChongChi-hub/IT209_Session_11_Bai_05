@@ -39,6 +39,9 @@ jobs:
     name: Build and Push Docker Image
     needs: test
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
 
     steps:
       - name: Checkout mã nguồn
@@ -61,7 +64,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.REGISTRY_TOKEN }}
+          password: ${{ secrets.REGISTRY_TOKEN || secrets.GITHUB_TOKEN }}
 
       - name: Đóng gói và đẩy Docker Image lên GHCR
         uses: docker/build-push-action@v5
